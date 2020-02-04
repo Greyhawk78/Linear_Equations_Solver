@@ -30,50 +30,51 @@ public class Main {
     }
 
     public static double [] [] rowsManipulate (double [] [] matrix) {
-        for (int ser=0; ser<matrix.length; ser++) {
+      for (int ser=0; ser<matrix.length; ser++) {
             System.out.println(Arrays.toString(matrix[ser]));
         }
         for (int k = 1; k < matrix.length; k++) {
-            for (int row=k-1;row<matrix.length-1;row++) {
-                double[] temp;
-                if(Math.abs(matrix[row][k-1])< Math.abs(matrix[row+1][k-1])) {
-                    temp=matrix[row];
-                    matrix[row]=matrix[row+1];
-                    matrix[row+1]=temp;
-                }
-            }
+            sortColumns(matrix,k-1);
             for (int j = k; j < matrix.length; j++) {
 
                 double m = matrix[j][k - 1] / matrix[k - 1][k - 1];
-                for (int i = 0; i < matrix.length + 1; i++) {
-                    matrix[j][i] = matrix[j][i] - m * matrix[k - 1][i];
-                }
                 System.out.println("Divider is " + m);
-                System.out.println("Current matrix is ");
+                System.out.println("Matrix before step ");
                 for (int ser=0; ser<matrix.length; ser++) {
                     System.out.println(Arrays.toString(matrix[ser]));
                 }
+                for (int i = 0; i < matrix.length + 1; i++) {
+                    matrix[j][i] = matrix[j][i] - m * matrix[k - 1][i];
+                }
+                System.out.println("Matrix after step ");
+                for (int ser=0; ser<matrix.length; ser++) {
+                    System.out.println(Arrays.toString(matrix[ser]));
+                }
+
             }
         }
         return matrix;
     }
 
- /*   public static double [] [] rowsSort (double [] [] matrix) {
-      double[] temp;
-      for (int i=0; i<matrix.length-1; i++) {
-              for (int k=i;k<matrix.length-1;k++) {
-                  if(Math.abs(matrix[k][i])< Math.abs(matrix[k+1][i])) {
-                      temp=matrix[k];
-                      matrix[k]=matrix[k+1];
-                      matrix[k+1]=temp;
-                  }
-              }
-      }
-       return matrix;
-   }
-*/
+    public static double[][] sortColumns(double[][] m, int index) {
 
-
+                boolean swapped;
+                do {
+                    swapped=false;
+                    for (int row = index; row < m.length - 1; row++) {
+                        // Should these be swapped?
+                        if (Math.abs(m[row][index]) < Math.abs(m[row + 1][index])) {
+                            // Swap this one with the next.
+                            double temp = m[row][index];
+                            m[row][index] = m[row + 1][index];
+                            m[row + 1][index] = temp;
+                            // We swapped! Remember to run through again.
+                            swapped = true;
+                        }
+                    }
+                } while (swapped);
+        return m;
+    }
 
     public static double [] answers (double [] [] matrix) {
         double [] answers = new double[matrix.length];
@@ -106,11 +107,10 @@ public class Main {
         System.out.println("Reading matrix");
         // double [] [] matrix = read (args);
         double [] [] matrix = {
-                {  2, -3, -1,  2,  3, 4 },
-                {  4, -4, -1,  4, 11, 4 },
-                {  2, -5, -2,  2, -1, 9 },
-                {  0,  2,  1,  0,  4, -6 },
-                { -4,  6,  0,  0,  7, 5 },
+                {  2, -3, -1,  2 },
+                {  4, -4, 0,  4 },
+                {  7, -2, -1,  4 },
+
         };
         System.out.println("Start solving");
         System.out.println("Rows manipulation");
