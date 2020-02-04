@@ -13,6 +13,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Linear Equations Solver/task" />
+            <option value="$PROJECT_DIR$/Problems/Check if an array is sorted ascending" />
             <option value="$PROJECT_DIR$/util" />
           </set>
         </option>

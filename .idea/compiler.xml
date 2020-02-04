@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="Linear_Equations_Solver-task_main" target="11" />
       <module name="Linear_Equations_Solver-task_test" target="11" />
+      <module name="Problems-Check_if_an_array_is_sorted_ascending_main" target="11" />
+      <module name="Problems-Check_if_an_array_is_sorted_ascending_test" target="11" />
       <module name="util_main" target="11" />
       <module name="util_test" target="11" />
     </bytecodeTargetLevel>

@@ -9,7 +9,7 @@ import java.util.*;
 public class Main {
 
    public static double [] [] read(String [] args){
-        int size;
+
         double [] [] matrix = new double[0][];
         List<String> arguments = Arrays.asList(args);
             File file = new File(arguments.get(arguments.indexOf("-in") + 1));
@@ -29,25 +29,28 @@ public class Main {
             return matrix;
     }
 
-    public static double [] [] rowsManipulate (double [] [] matrix) {
-      for (int ser=0; ser<matrix.length; ser++) {
+    public static double [] [] rowsManipulate (double [] [] matrix, int variables,int equations) {
+      for (int ser=0; ser<equations; ser++) {
             System.out.println(Arrays.toString(matrix[ser]));
         }
-        for (int k = 1; k < matrix.length; k++) {
+        for (int k = 1; k < equations; k++) {
             sortColumns(matrix,k-1);
-            for (int j = k; j < matrix.length; j++) {
+            if (matrix[k - 1][k - 1]==0) {
+
+            }
+            for (int j = k; j < equations; j++) {
 
                 double m = matrix[j][k - 1] / matrix[k - 1][k - 1];
                 System.out.println("Divider is " + m);
                 System.out.println("Matrix before step ");
-                for (int ser=0; ser<matrix.length; ser++) {
+                for (int ser=0; ser<equations; ser++) {
                     System.out.println(Arrays.toString(matrix[ser]));
                 }
-                for (int i = 0; i < matrix.length + 1; i++) {
+                for (int i = 0; i < variables + 1; i++) {
                     matrix[j][i] = matrix[j][i] - m * matrix[k - 1][i];
                 }
                 System.out.println("Matrix after step ");
-                for (int ser=0; ser<matrix.length; ser++) {
+                for (int ser=0; ser<equations; ser++) {
                     System.out.println(Arrays.toString(matrix[ser]));
                 }
 
@@ -65,9 +68,9 @@ public class Main {
                         // Should these be swapped?
                         if (Math.abs(m[row][index]) < Math.abs(m[row + 1][index])) {
                             // Swap this one with the next.
-                            double temp = m[row][index];
-                            m[row][index] = m[row + 1][index];
-                            m[row + 1][index] = temp;
+                            double temp [] = m[row];
+                            m[row] = m[row + 1];
+                            m[row + 1] = temp;
                             // We swapped! Remember to run through again.
                             swapped = true;
                         }
@@ -107,14 +110,14 @@ public class Main {
         System.out.println("Reading matrix");
         // double [] [] matrix = read (args);
         double [] [] matrix = {
-                {  2, -3, -1,  2 },
-                {  4, -4, 0,  4 },
-                {  7, -2, -1,  4 },
-
+                {  0, 1, 2, 9 },
+                {  0, 1, 3 ,1},
+                {  1, 0, 6, 0},
+                {2, 0, 2, 0}
         };
         System.out.println("Start solving");
         System.out.println("Rows manipulation");
-        matrix=rowsManipulate(matrix);
+        matrix=rowsManipulate(matrix, 3, 4);
         System.out.println("Processing answers");
         double [] anwers=answers(matrix);
         System.out.println(Arrays.toString(anwers));
