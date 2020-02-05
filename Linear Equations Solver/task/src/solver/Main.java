@@ -8,9 +8,12 @@ import java.util.*;
 
 public class Main {
 
+    public static String result=null;
+    public static int variables;
+    public static int equations;
+
    public static double [] [] read(String [] args){
-        int variables;
-        int equations;
+
         double [] [] matrix = new double[0][];
         List<String> arguments = Arrays.asList(args);
         if (arguments.contains("-in")) {
@@ -36,7 +39,7 @@ public class Main {
     }
 
     public static double [] [] rowsManipulate (double [] [] matrix, int variables, int equations) {
-        for (int row = 0; row < equations-1; row++) {
+        for (int row = 0; row < variables; row++) {
                     columnSort(matrix, row, row);
                     int column =row;
                     for (int current = row; current<equations-1;current++) {
@@ -59,17 +62,46 @@ public class Main {
         return matrix;
     }
 
-    public static double [] answers (double [] [] matrix) {
-        double [] answers = new double[matrix.length];
+    public static double [] answers (double [] [] matrix, int variables, int equations) {
+        double [] answers = new double[variables];
+        int zeroCount=0;
+        int variableCount=0;
         for (int j=0;j<matrix.length; j++) {
-            for (int i = 0; i < matrix[0].length; i++) {
-
+            for (int i = 0; i < matrix[0].length-1; i++) {
+            if (matrix[j][i]==0) zeroCount++;
             }
+            if (zeroCount==matrix[0].length-1&&matrix[j][matrix[0].length-1]!=0) {
+                result="No solutions";
+                return answers;
+            }
+            zeroCount=0;
+        }
+if (Double.isNaN(matrix[matrix.length-1][0])||variables>equations) {
+    result="Infinitely many solutions";
+    return answers;
+}
+
+
+   /*     for (int j=matrix.length-1;j>-1; j--) {
+            for (int i = 0; i < matrix[0].length-1; i++) {
+                if (matrix[j][i]!=0) variableCount++;
+            }
+            if (variableCount>1) {
+                result="Infinitely many solutions";
+                return answers;
+            }
+            if (variableCount==1) {
+                break;
+            }
+            variableCount=0;
         }
 
-        for (int i=matrix.length-1; i>=0;i--) {
-            answers [i] = matrix [i] [matrix.length] / matrix [i] [i];
-            for (int c=matrix.length-1; c>i;c--) {
+    */
+
+
+        for (int i=variables-1; i>=0;i--) {
+            answers [i] = matrix [i] [variables] / matrix [i] [i];
+            for (int c=variables-1; c>i;c--) {
                 answers[i] = answers [i] - matrix [i][c]*answers[c]/matrix[i][i];
             }
         }
@@ -102,10 +134,15 @@ public class Main {
             } else {
                 File outfile = new File(arguments.get(arguments.indexOf("-out") + 1));
                 try (PrintWriter printWriter = new PrintWriter(outfile)) {
+                    if (result==null) {
                     for (int i=0; i<answers.length; i++) {
                         printWriter.println(answers[i]);
                     }
-                    System.out.println("Saved to file " + outfile);
+                    System.out.println("Saved to file " + outfile);}
+                    else {
+                        printWriter.println(result);
+                        System.out.println("Saved to file " + outfile);
+                    }
                 } catch (FileNotFoundException e) {
                     System.out.println("Error. File not found");
                 }
@@ -118,17 +155,16 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println("Reading matrix");
-       // double [] [] matrix = read (args);
-        int variables = 3;
-        int equations=4;
-        double [] [] matrix = {{1,2,3,6}, {5, 1 , 3, 1}, {-3, 5, 7,1}, {1, 3, -7, 4}};
+         double [] [] matrix = read (args);
+        //double [] [] matrix = {{1,1, 2, 9}, {0, 1, 3, 1}, {0, 0, 6, 0}, {0, 0, 0, 7}};
         System.out.println("Start solving");
         System.out.println("Rows manipulation");
         matrix = rowsManipulate(matrix,variables,equations);
         System.out.println("Processing answers");
-        double [] anwers=answers(matrix);
+        double [] anwers=answers(matrix,variables,equations);
         System.out.println(Arrays.toString(anwers));
         System.out.println("Processing output");
+        System.out.println(result);
         output(args,anwers);
 
     }
