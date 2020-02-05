@@ -523,6 +523,9 @@ files:
     0.635499652063793
     0.4715628585840861
   learner_created: true
+- name: in.txt
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/40/stages/212/implement
 status: Unchecked
 record: -1
